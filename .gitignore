@@ -1,1 +1,6 @@
 raw_data/
+.env
+__pycache__/
+*checkpoint.ipynb
+*.ipynb_checkpoints
+*.egg-info

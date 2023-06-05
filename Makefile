@@ -19,4 +19,4 @@ update_current_branch:
 	git pull origin master
 
 	git checkout $(BRANCH)
-	git git merge master
+	git merge master

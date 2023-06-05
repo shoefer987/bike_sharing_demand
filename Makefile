@@ -13,7 +13,7 @@ create_new_branch:
 # Syntax: BRANCH='<Branch Name>' make update_current_branch
 update_current_branch:
 	git add .
-	git commit -m 'Update'
+	git commit -m 'Update from master'
 
 	git checkout master
 	git pull origin master

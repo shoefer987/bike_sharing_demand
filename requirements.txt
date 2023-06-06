@@ -124,3 +124,6 @@ webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.5.2
 wrapt==1.15.0
+google-cloud-bigquery
+pyarrow
+db-dtypes

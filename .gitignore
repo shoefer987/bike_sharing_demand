@@ -1,2 +1,7 @@
 raw_data/
 notebooks/shoefer987_project_pitch.ipynb
+.env
+__pycache__/
+*checkpoint.ipynb
+*.ipynb_checkpoints
+*.egg-info

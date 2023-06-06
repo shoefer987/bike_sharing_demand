@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from colorama import Fore, Style
 from pathlib import Path
+import requests
 
 from bikesharing.params import *
 
@@ -55,3 +56,39 @@ def get_raw_data(
     print(f"✅ Data loaded, with shape {df.shape}")
 
     return df
+
+def get_weather_data(
+        cache_path:Path,
+        data_has_header=True):
+    """
+    Retrieve the historical weather data from 'start_year' to 'end_year' from the
+    Open Meteo Api.
+    """
+
+    if cache_path.is_file():
+        print(Fore.BLUE + "\nLoad data from local CSV..." + Style.RESET_ALL)
+        historical_weather_data_df = pd.read_csv(cache_path, header='infer' if data_has_header else None)
+    else:
+        # URL: https://archive-api.open-meteo.com/v1/archive?latitude=48.70&longitude=13.46&start_date=2019-01-01&end_date=2022-12-31&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,windspeed_10m
+
+        base_url = 'https://archive-api.open-meteo.com/v1/archive'
+
+        params = {
+            'latitude': 48.70,
+            'longitude': 13.46,
+            'start_date' : f'{START_YEAR}-01-01',
+            'end_date' : f'{END_YEAR}-12-31',
+            'hourly': ['temperature_2m', 'relativehumidity_2m', 'apparent_temperature','windspeed_10m','precipitation']
+        }
+
+        historical_weather_data = requests.get(base_url , params=params).json()
+
+        historical_weather_data_df = pd.DataFrame(historical_weather_data['hourly'])
+
+        if historical_weather_data_df.shape[0] > 1:
+            historical_weather_data_df.to_csv(cache_path, header=data_has_header, index=False)
+            print(f'columns: {historical_weather_data_df.columns}')
+
+    print(f"✅ Data loaded, with shape {historical_weather_data_df.shape}")
+
+    return historical_weather_data_df

@@ -25,9 +25,9 @@ def get_folds(
 
     return dfs
 
-def train_test_split(fold:pd.DataFrame,
-                     train_test_ratio: float,
-                     input_length: int) -> Tuple[pd.DataFrame]:
+def train_test_indices(fold:pd.DataFrame,
+                    train_test_ratio: float,
+                    input_length: int) -> Tuple[pd.DataFrame]:
     """From a fold dataframe, take a train dataframe and test dataframe based on
     the split ratio.
     - df_train contains all the timesteps until round(train_test_ratio * len(fold))

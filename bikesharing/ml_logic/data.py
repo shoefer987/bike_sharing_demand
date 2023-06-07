@@ -69,8 +69,6 @@ def get_weather_data(
         print(Fore.BLUE + "\nLoad data from local CSV..." + Style.RESET_ALL)
         historical_weather_data_df = pd.read_csv(cache_path, header='infer' if data_has_header else None)
     else:
-        # URL: https://archive-api.open-meteo.com/v1/archive?latitude=48.70&longitude=13.46&start_date=2019-01-01&end_date=2022-12-31&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,windspeed_10m
-
         base_url = 'https://archive-api.open-meteo.com/v1/archive'
 
         params = {

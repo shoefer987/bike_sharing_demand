@@ -127,3 +127,4 @@ wrapt==1.15.0
 google-cloud-bigquery
 pyarrow
 db-dtypes
+geopandas

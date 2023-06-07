@@ -8,6 +8,8 @@ from bikesharing.params import *
 
 # get weather data -> data.get_weather_data
 
+# remove duplicates (if relevant)/ deal with missing values
+
 # aggregate BQ data by hour
 
 # join BQ-data & weather data

@@ -83,6 +83,8 @@ def get_weather_data(
 
         historical_weather_data = requests.get(base_url , params=params).json()
 
+        # check keys for hourly
+
         historical_weather_data_df = pd.DataFrame(historical_weather_data['hourly'])
 
         if historical_weather_data_df.shape[0] > 1:

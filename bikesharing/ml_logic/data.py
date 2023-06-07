@@ -2,11 +2,12 @@ import numpy as np
 import pandas as pd
 from colorama import Fore, Style
 from pathlib import Path
-import requests
+import requests, csv, json
 
 from bikesharing.params import *
 
 from google.cloud import bigquery
+from shapely.geometry import Polygon
 
 
 def get_raw_data():
@@ -93,3 +94,13 @@ def get_weather_data(
     print(f"✅ Data loaded, with shape {historical_weather_data_df.shape}")
 
     return historical_weather_data_df
+
+def get_polygons():
+    polygons = {}
+    # load coordinates for districts from csv and sava them in a dict of Polygons
+    with open('../raw_data/polygons.csv', 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            polygons[row['district']] = Polygon(json.loads(row['coordinates']))
+
+    return polygons

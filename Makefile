@@ -24,3 +24,6 @@ update_current_branch:
 # Syntax: make update_requirements
 make update_requirements:
 	@pip freeze > requirements.txt
+
+run_preprocess:
+	python -c 'from bikesharing.interface.main import preprocess; preprocess()'

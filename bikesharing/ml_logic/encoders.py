@@ -85,9 +85,9 @@ def encode_temporal_features(df):
         pd.DataFrame: The DataFrame with encoded temporal features.
     """
     # Extract hour, month, and day from the 'STARTTIME' column
-    df['hour'] = df['STARTTIME'].dt.hour
-    df['month'] = df['STARTTIME'].dt.month
-    df['day'] = df['STARTTIME'].dt.day
+    df['hour'] = df['rent_date_hour'].dt.hour
+    df['month'] = df['rent_date_hour'].dt.month
+    df['day'] = df['rent_date_hour'].dt.day
 
     temporal_features = ['hour', 'month', 'day']
 
@@ -95,5 +95,7 @@ def encode_temporal_features(df):
     for feature in temporal_features:
         df[f'{feature}_sin'] = np.sin(2 * np.pi * df[feature] / df[feature].max())
         df[f'{feature}_cos'] = np.cos(2 * np.pi * df[feature] / df[feature].max())
+
+    df = df[['rent_date_hour', 'hour_sin', 'hour_cos' 'day_sin', 'day_cos', 'month_sin', 'month_cos']]
 
     return df

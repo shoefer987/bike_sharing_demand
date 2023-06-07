@@ -47,3 +47,18 @@ def is_weekend(data: pd.DataFrame):
     data["is_weekend"] = X.apply(lambda x: 1 if x.weekday() >= 5 else 0)
 
     return data[['rent_date_hour', 'is_weekend']]
+
+def feature_selection(data, list):
+    '''
+    Performs feature selection on the input data.
+
+    Args:
+        data (pd.DataFrame): The input DataFrame.
+        list: List containing features
+
+    Returns:
+        DataFrame: A DataFrame containing the Features from the List.
+    '''
+    df = data[[c for c in data.columns if c in list]]
+
+    return df

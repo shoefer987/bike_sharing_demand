@@ -21,7 +21,7 @@ def preprocess() -> pd.DataFrame:
     8. preproc-pipeline
     """
 
-    cache_path_preproc=Path(f'{LOCAL_DATA_PATH}/processed/MVG_Rad_Fahrten_{START_YEAR}_to_{END_YEAR}.csv')
+    cache_path_preproc=Path(f'{LOCAL_DATA_PATH}/processed/processed_from_{START_YEAR}_to_{END_YEAR}.csv')
 
     if cache_path_preproc.is_file():
         print(Fore.BLUE + "\nLoad preprocessed data from local CSV..." + Style.RESET_ALL)
@@ -36,13 +36,13 @@ def preprocess() -> pd.DataFrame:
         FROM `{GCP_PROJECT}.{BQ_DATASET}.raw_data_mvg`
     '''
 
-    rental_data_df = get_raw_data(gcp_project=GCP_PROJECT , query=query , cache_path=Path(f'{LOCAL_DATA_PATH}/raw/MVG_Rad_Fahrten_{START_YEAR}_to_{END_YEAR}.csv'))
+    rental_data_df = get_raw_data(gcp_project=GCP_PROJECT , query=query , cache_path=Path(f'{LOCAL_DATA_PATH}/raw/mvg_rentals_from_{START_YEAR}_to_{END_YEAR}.csv'))
 
     # 2. drop cols
-    rental_data_relcols_df = rental_data_df[['STARTTIME' , 'STARTLAT' , 'STARTLON']]
+    rental_relavent_cols_df = rental_data_df[['STARTTIME' , 'STARTLAT' , 'STARTLON']]
 
     # 3. clean(rm duplicates)
-    rental_data_relcols_df = rental_data_relcols_df.drop_duplicates()
+    rental_relavent_cols_df = rental_relavent_cols_df.drop_duplicates()
 
     # 4. encode y
         # encoded_rental_df = encode_y(rental_data_relcols_df)
@@ -51,7 +51,7 @@ def preprocess() -> pd.DataFrame:
         # aggregated_rental_df = aggregate_by_hour(encoded_rental_df)
 
     # 6. join with weather data
-    weather_data_df = get_weather_data(cache_path=Path(f'{LOCAL_DATA_PATH}/raw/Histotical_Weather_Data_{START_YEAR}_to_{END_YEAR}.csv'))
+    weather_data_df = get_weather_data(cache_path=Path(f'{LOCAL_DATA_PATH}/raw/histotical_weather_data_{START_YEAR}_to_{END_YEAR}.csv'))
         # merged_df = aggregated_rental_df.merge(weather_data_df, right_on='<time_col_weather>' , left_on='<time_col_rental>' , how=left)
 
     # 7. feature enginering & merge

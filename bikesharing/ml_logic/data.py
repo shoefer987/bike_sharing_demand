@@ -9,17 +9,6 @@ from bikesharing.params import *
 from google.cloud import bigquery
 from shapely.geometry import Polygon
 
-
-def get_raw_data():
-    dfs = []
-    for year in range(START_YEAR,END_YEAR+1,1):
-        df = pd.read_csv(f'raw_data/MVG_Rad_Fahrten_{year}.csv', sep=';')
-        cols = [col.strip() for col in df.columns]
-        df.columns = cols
-        dfs.append(df)
-
-    return pd.concat(dfs, axis=0)
-
 def get_raw_data(
         gcp_project:str,
         query:str,
@@ -104,3 +93,5 @@ def get_polygons():
             polygons[row['district']] = Polygon(json.loads(row['coordinates']))
 
     return polygons
+
+# define get_processed data

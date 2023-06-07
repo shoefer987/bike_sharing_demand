@@ -72,6 +72,22 @@ def preprocess() -> pd.DataFrame:
 
 # function to be defined
 def train():
+    """
+    - Download processed data from your BQ table (or from cache if it exists)
+    - Train on the preprocessed dataset (which should be ordered by date)
+    - Store training results and model weights
+
+    Return val_mae as a float
+    """
+
+    # 1. Load processed data
+        # 1.1 Load from cache if present
+
+        # 1.2 Load from GBQ if not
+
+    # 2. Test/Train/Val Split
+        # Train=2 years
+        # Test=1 year
     pass
 
 # function to be defined

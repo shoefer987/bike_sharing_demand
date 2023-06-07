@@ -63,10 +63,11 @@ def encode_district_label(rental_df: pd.DataFrame, polygons: dict) -> pd.DataFra
     # Apply one-hot encoding and add the encoded columns to the DataFrame
     encoded_columns = district_ohe.get_feature_names_out()
     encoded_values = district_ohe.transform(df[['district']])
-    df_encoded = pd.DataFrame(encoded_values, columns=encoded_columns)
+    df[encoded_columns] = encoded_values
+    df.drop(columns=['district'] , inplace=True)
 
     # Update the column names in df without the prefix 'district_'
-    column_names = [column.split('district_', 1)[-1] for column in df_encoded.columns]
-    df.columns = list(df.columns[:-len(encoded_columns)]) + column_names
+    column_names = [column.split('district_', 1)[-1] for column in df.columns]
+    df.columns = column_names
 
     return df

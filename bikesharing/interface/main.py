@@ -1,6 +1,7 @@
 import pandas as pd
 
-from bikesharing.ml_logic.data import get_raw_data, get_weather_data
+from bikesharing.ml_logic.data import get_raw_data, get_weather_data, get_polygons
+from bikesharing.ml_logic.encoders import encode_district_label
 from bikesharing.params import *
 
 from pathlib import Path
@@ -45,7 +46,7 @@ def preprocess() -> pd.DataFrame:
     rental_relavent_cols_df = rental_relavent_cols_df.drop_duplicates()
 
     # 4. encode y
-        # encoded_rental_df = encode_y(rental_data_relcols_df)
+    encoded_rental_df = encode_district_label(rental_relavent_cols_df , get_polygons())
 
     # 5. aggregate by hour
         # aggregated_rental_df = aggregate_by_hour(encoded_rental_df)

@@ -36,7 +36,7 @@ def get_district_from_polygons(rental_df: pd.DataFrame, polygons: dict) -> pd.Da
     rental_geo_df = gpd.sjoin(rental_gdf, polygons_gdf, predicate='within')
 
     # Drop unnecessary columns
-    rental_geo_df = rental_geo_df.drop(columns=['geometry', 'index_right'])
+    rental_geo_df = rental_geo_df.drop(columns=['geometry', 'index_right', 'STARTLON', 'STARTLAT'])
 
     return rental_geo_df
 

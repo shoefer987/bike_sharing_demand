@@ -1,23 +1,84 @@
-import numpy as np
 import pandas as pd
+import numpy as np
+import csv, json
+import geopandas as gpd
+from shapely.geometry import Polygon, Point
+import requests
+import holidays
+
 from bikesharing.params import *
+from bikesharing.ml_logic.data import get_raw_data
 
-# get data from BQ -> data.get_raw_data
+from sklearn.compose import ColumnTransformer, make_column_transformer
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import make_pipeline, Pipeline
+from sklearn.preprocessing import FunctionTransformer, MinMaxScaler
 
-# get y from geocoordinates & label encode it
 
-# get weather data -> data.get_weather_data
+from bikesharing.ml_logic.encoders import *
 
-# remove duplicates (if relevant)/ deal with missing values
 
-# aggregate BQ data by hour
 
-# join BQ-data & weather data
+# Aggregate by hour
 
-# flag weekends & holidays
+def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Groups the rental data by hour.
 
-# encode day/month/hour (-> sin/cos)
+    Args:
+        df (pd.DataFrame): The input DataFrame.
 
-# drop everything BUT weather data and engineered features
+    Returns:
+        pd.DataFrame: The DataFrame with rental data grouped by hour.
+    """
+    # Preprocessing
+    df['rent_date_hour'] = df['STARTTIME'].dt.floor('H')
 
-# scale numeric features
+    # Grouping by Hour
+    df_by_hour = df.groupby('rent_date_hour').agg({
+        'hour': np.mean,
+        **{district: np.sum for district in df['district']}
+    }).reset_index()
+
+    return df_by_hour
+
+
+
+# WIP
+def preprocess_features(X: pd.DataFrame) -> np.ndarray:
+    def create_preprocessor() -> ColumnTransformer:
+
+        # # IMPUTE PIPE
+        # impute_pipe = make_pipeline(
+        #     # FunctionTransformer(group_rental_data_by_hour),
+        #     make_column_transformer(
+        #         (SimpleImputer(
+        #             strategy="mean",
+        #             ["rent_date_hour"]))
+        #     )
+        # )
+
+        # SCALE PIPE
+        scaler_pipe = Pipeline([
+            ('scaler', MinMaxScaler())
+        ])
+
+        # # COMBINED PREPROCESSOR
+        # final_preprocessor = ColumnTransformer(
+        #     [
+        #         ("impute_pipe", impute_pipe, ["rent_date_hour"]),
+        #         ("scaler_pipe", scaler_pipe, ["rent_date_hour"])
+        #     ],
+        #     n_jobs=-1,
+        # )
+
+        # return final_preprocessor
+        return scaler_pipe
+
+
+    preprocessor = create_preprocessor()
+    X_processed = preprocessor.fit_transform(X)
+
+    print("✅ X_processed, with shape", X_processed.shape)
+
+    return X_processed

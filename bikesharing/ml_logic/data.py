@@ -75,16 +75,14 @@ def get_weather_data(
             'latitude': 48.70,
             'longitude': 13.46,
             'start_date' : f'{START_YEAR}-01-01',
-            'end_date' : f'{END_YEAR}-12',
+            'end_date' : f'{END_YEAR}-12-31',
             'hourly': ['temperature_2m', 'relativehumidity_2m', 'apparent_temperature','windspeed_10m','precipitation']
         }
 
         historical_weather_data = requests.get(base_url , params=params).json()
 
         if 'hourly' not in historical_weather_data.keys():
-            print('''Error while requesting from the API. Please check if the API is stil working with the following URL:\n
-                  https://archive-api.open-meteo.com/v1/archive?latitude=48.70&longitude=13.46&start_date=2019-01-01&end_date=2022-12-31&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,windspeed_10m\n
-                  If the API is working check your code!''')
+            print('''Error while requesting from the API. Please check if the API is stil working with the following URL:\nhttps://archive-api.open-meteo.com/v1/archive?latitude=48.70&longitude=13.46&start_date=2019-01-01&end_date=2022-12-31&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation,windspeed_10m\nIf the API is working check your code!''')
 
         historical_weather_data_df = pd.DataFrame(historical_weather_data['hourly'])
 

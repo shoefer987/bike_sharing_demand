@@ -89,6 +89,7 @@ def train():
     # 2. Test/Train/Val Split
         # Train=2 years
         # Test=1 year
+        # Val=1 year
     pass
 
 # function to be defined

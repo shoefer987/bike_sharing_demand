@@ -42,36 +42,14 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
     return df_by_hour
 
 
-
-# WIP
 def preprocess_features(X: pd.DataFrame) -> np.ndarray:
     def create_preprocessor() -> ColumnTransformer:
-
-        # # IMPUTE PIPE
-        # impute_pipe = make_pipeline(
-        #     # FunctionTransformer(group_rental_data_by_hour),
-        #     make_column_transformer(
-        #         (SimpleImputer(
-        #             strategy="mean",
-        #             ["rent_date_hour"]))
-        #     )
-        # )
 
         # SCALE PIPE
         scaler_pipe = Pipeline([
             ('scaler', MinMaxScaler())
         ])
 
-        # # COMBINED PREPROCESSOR
-        # final_preprocessor = ColumnTransformer(
-        #     [
-        #         ("impute_pipe", impute_pipe, ["rent_date_hour"]),
-        #         ("scaler_pipe", scaler_pipe, ["rent_date_hour"])
-        #     ],
-        #     n_jobs=-1,
-        # )
-
-        # return final_preprocessor
         return scaler_pipe
 
 

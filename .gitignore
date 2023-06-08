@@ -2,6 +2,7 @@ raw_data/
 notebooks/shoefer987_project_pitch.ipynb
 notebooks/shoefer987_preprocessing.ipynb
 notebooks/jui-kate_clustering.ipynb
+notebooks/jonathan122802_testing_preproc.ipynb
 .env
 __pycache__/
 *checkpoint.ipynb

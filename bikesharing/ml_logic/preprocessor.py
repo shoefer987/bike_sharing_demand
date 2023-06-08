@@ -22,6 +22,7 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: The DataFrame with rental data grouped by hour.
     """
     # Preprocessing
+    df['STARTTIME'] = pd.to_datetime(df['STARTTIME'])
     df['rent_date_hour'] = df['STARTTIME'].dt.floor('H')
     df['rent_date_hour'] = pd.to_datetime(df['STARTTIME']).dt.floor('H')
 
@@ -29,10 +30,12 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
     # Grouping by Hour
     df_by_hour = df.groupby(by='rent_date_hour')[df.columns[1:-1]].sum()
 
-    return df_by_hour
+    return df_by_hour.reset_index()
 
 
-def preprocess_features(X: pd.DataFrame) -> np.ndarray:
+def preprocess_features(df: pd.DataFrame):
+
+    df = df.fillna(0)
     def create_preprocessor() -> ColumnTransformer:
 
         # SCALE PIPE
@@ -42,10 +45,12 @@ def preprocess_features(X: pd.DataFrame) -> np.ndarray:
 
         return scaler_pipe
 
+    X = df[['temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
+       'windspeed_10m', 'precipitation','hour_sin', 'hour_cos', 'month_sin', 'month_cos', 'day_sin', 'day_cos']]
 
     preprocessor = create_preprocessor()
     X_processed = preprocessor.fit_transform(X)
 
     print("✅ X_processed, with shape", X_processed.shape)
 
-    return X_processed
+    return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1)

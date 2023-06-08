@@ -51,6 +51,4 @@ def preprocess_features(df: pd.DataFrame):
     preprocessor = create_preprocessor()
     X_processed = preprocessor.fit_transform(X)
 
-    print("✅ X_processed, with shape", X_processed.shape)
-
-    return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1)
+    return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1) , y

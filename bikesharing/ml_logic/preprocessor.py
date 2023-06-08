@@ -1,26 +1,16 @@
+from bikesharing.params import *
+from bikesharing.ml_logic.encoders import *
+
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import MinMaxScaler
+
 import pandas as pd
 import numpy as np
-import csv, json
-import geopandas as gpd
-from shapely.geometry import Polygon, Point
-import requests
-import holidays
-
-from bikesharing.params import *
-from bikesharing.ml_logic.data import get_raw_data
-
-from sklearn.compose import ColumnTransformer, make_column_transformer
-from sklearn.impute import SimpleImputer
-from sklearn.pipeline import make_pipeline, Pipeline
-from sklearn.preprocessing import FunctionTransformer, MinMaxScaler
-
-
-from bikesharing.ml_logic.encoders import *
 
 
 
 # Aggregate by hour
-
 def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
     """
     Groups the rental data by hour.

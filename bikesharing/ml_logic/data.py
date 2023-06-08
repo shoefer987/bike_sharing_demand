@@ -29,10 +29,10 @@ def get_raw_data(
     """
 
     if cache_path.is_file():
-        print(Fore.BLUE + "\nLoad data from local CSV..." + Style.RESET_ALL)
+        print(Fore.BLUE + "\nLoad rental_data from local CSV..." + Style.RESET_ALL)
         df = pd.read_csv(cache_path, header='infer' if data_has_header else None)
     else:
-        print(Fore.BLUE + "\nLoad data from BigQuery server..." + Style.RESET_ALL)
+        print(Fore.BLUE + "\nLoad rental_data from BigQuery server..." + Style.RESET_ALL)
         client = bigquery.Client(project=gcp_project)
         query_job = client.query(query)
         result = query_job.result()
@@ -56,7 +56,7 @@ def get_weather_data(
     """
 
     if cache_path.is_file():
-        print(Fore.BLUE + "\nLoad data from local CSV..." + Style.RESET_ALL)
+        print(Fore.BLUE + "\nLoad weather_data from local CSV..." + Style.RESET_ALL)
         historical_weather_data_df = pd.read_csv(cache_path, header='infer' if data_has_header else None)
     else:
         base_url = 'https://archive-api.open-meteo.com/v1/archive'

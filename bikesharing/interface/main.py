@@ -11,7 +11,7 @@ from colorama import Fore, Style
 
 
 
-def preprocess() -> pd.DataFrame:
+def preprocess():
     """
     1. call get_raw_data
     2. drop cols
@@ -24,12 +24,17 @@ def preprocess() -> pd.DataFrame:
     8. preproc-pipeline
     """
 
-    cache_path_preproc=Path(f'{LOCAL_DATA_PATH}/processed/processed_from_{START_YEAR}_to_{END_YEAR}.csv')
+    cache_path_X_preproc=Path(f'{LOCAL_DATA_PATH}/processed/X_processed_from_{START_YEAR}_to_{END_YEAR}.csv')
+    cache_path_y_preproc=Path(f'{LOCAL_DATA_PATH}/processed/y_processed_from_{START_YEAR}_to_{END_YEAR}.csv')
 
-    if cache_path_preproc.is_file():
+    if cache_path_X_preproc.is_file():
         print(Fore.BLUE + "\nLoad preprocessed data from local CSV..." + Style.RESET_ALL)
-        preproc_df = pd.read_csv(cache_path_preproc , header=None)
-        return preproc_df
+        X_processed = pd.read_csv(cache_path_X_preproc , header=None)
+        y = pd.read_csv(cache_path_y_preproc , header='infer')
+        if X_processed.shape[0] == y.shape[0]:
+            return X_processed , y
+        print('\nShape mismatch between y and X')
+        return None
 
     print(Fore.BLUE + "\nPreprocessing Data..." + Style.RESET_ALL)
 
@@ -87,11 +92,16 @@ def preprocess() -> pd.DataFrame:
     selected_merged_df = feature_selection(merged_df , features)
 
     # 9. preproc-pipeline (Keep date_time for RNN)
-    preproc_df = pd.DataFrame(preprocess_features(selected_merged_df))
+    X_processed,y = preprocess_features(selected_merged_df)
 
-    preproc_df.to_csv(cache_path_preproc , header=False , index=False)
+    X_processed.to_csv(cache_path_X_preproc , header=False , index=False)
+    y.to_csv(cache_path_y_preproc , header=True , index=False)
 
-    return preproc_df
+    if X_processed.shape[0] == y.shape[0]:
+            return X_processed , y
+
+    print('\nShape mismatch between y and X')
+    return None
 
 # function to be defined
 def train():

@@ -2,6 +2,7 @@ import pandas as pd
 
 from bikesharing.ml_logic.data import get_raw_data, get_weather_data, get_polygons
 from bikesharing.ml_logic.encoders import encode_district_label
+from bikesharing.ml_logic.preprocessor import group_rental_data_by_hour
 from bikesharing.params import *
 
 from pathlib import Path
@@ -49,7 +50,7 @@ def preprocess() -> pd.DataFrame:
     encoded_rental_df = encode_district_label(rental_relavent_cols_df , get_polygons())
 
     # 5. aggregate by hour
-        # aggregated_rental_df = aggregate_by_hour(encoded_rental_df)
+    aggregated_rental_df = group_rental_data_by_hour(encoded_rental_df)
 
     # 6. join with weather data
     weather_data_df = get_weather_data(cache_path=Path(f'{LOCAL_DATA_PATH}/raw/histotical_weather_data_{START_YEAR}_to_{END_YEAR}.csv'))

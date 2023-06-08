@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import geopandas as gpd
 from shapely.geometry import Point
 
@@ -69,5 +70,32 @@ def encode_district_label(rental_df: pd.DataFrame, polygons: dict) -> pd.DataFra
     # Update the column names in df without the prefix 'district_'
     column_names = [column.split('district_', 1)[-1] for column in df.columns]
     df.columns = column_names
+
+    return df
+
+
+def encode_temporal_features(df):
+    """
+    Encodes temporal features (hour, month, day) in the DataFrame using sine and cosine transformations.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame with a 'STARTTIME' column.
+
+    Returns:
+        pd.DataFrame: The DataFrame with encoded temporal features.
+    """
+    # Extract hour, month, and day from the 'STARTTIME' column
+    df['hour'] = df['rent_date_hour'].dt.hour
+    df['month'] = df['rent_date_hour'].dt.month
+    df['day'] = df['rent_date_hour'].dt.day
+
+    temporal_features = ['hour', 'month', 'day']
+
+    # Apply sine and cosine transformations to the temporal features
+    for feature in temporal_features:
+        df[f'{feature}_sin'] = np.sin(2 * np.pi * df[feature] / df[feature].max())
+        df[f'{feature}_cos'] = np.cos(2 * np.pi * df[feature] / df[feature].max())
+
+    df = df[['rent_date_hour', 'hour_sin', 'hour_cos' 'day_sin', 'day_cos', 'month_sin', 'month_cos']]
 
     return df

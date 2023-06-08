@@ -11,3 +11,5 @@ __pycache__/
 env
 env:Zone.Identifier
 notebooks/archanaa_data_exploration.ipynb:Zone.Identifier
+notebooks/jui-kate_clustering.ipynb
+notebooks/jui-kate_feature_eng.ipynb

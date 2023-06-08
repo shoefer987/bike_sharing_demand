@@ -29,7 +29,7 @@ def preprocess():
 
     if cache_path_X_preproc.is_file():
         print(Fore.BLUE + "\nLoad preprocessed data from local CSV..." + Style.RESET_ALL)
-        X_processed = pd.read_csv(cache_path_X_preproc , header=None)
+        X_processed = pd.read_csv(cache_path_X_preproc , header='infer')
         y = pd.read_csv(cache_path_y_preproc , header='infer')
         if X_processed.shape[0] == y.shape[0]:
             return X_processed , y
@@ -76,7 +76,8 @@ def preprocess():
     merged_df = merged_df.merge(encoded_date , on='rent_date_hour' , how='inner')
 
     # 8. feature selection
-    features = ['Altstadt-Lehel', 'Au - Haidhausen',
+
+    districts = ['Altstadt-Lehel', 'Au - Haidhausen',
        'Aubing-Lochhausen-Langwied', 'Berg am Laim', 'Bogenhausen',
        'Feldmoching', 'Hadern', 'Harlaching', 'Hasenbergl-Lerchenau Ost',
        'Laim', 'Lochhausen', 'Ludwigsvorstadt-Isarvorstadt', 'Maxvorstadt',
@@ -85,16 +86,22 @@ def preprocess():
        'Pasing-Obermenzing', 'Ramersdorf-Perlach', 'Schwabing-Freimann',
        'Schwabing-West', 'Schwanthalerhöhe', 'Sendling', 'Sendling-Westpark',
        'Südgiesing', 'Thalkirchen', 'Trudering', 'Trudering-Riem',
-       'Untergiesing', 'Untergiesing-Harlaching', 'Untermenzing-Allach',
-       'temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
+       'Untergiesing', 'Untergiesing-Harlaching', 'Untermenzing-Allach']
+
+    X = merged_df.drop(columns=districts)
+    y = merged_df[districts]
+
+    features = ['temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
        'windspeed_10m', 'precipitation', 'is_holiday', 'is_weekend',
        'hour_sin', 'hour_cos', 'month_sin', 'month_cos', 'day_sin', 'day_cos']
-    selected_merged_df = feature_selection(merged_df , features)
+
+    selected_merged_df = feature_selection(X , features)
 
     # 9. preproc-pipeline (Keep date_time for RNN)
-    X_processed,y = preprocess_features(selected_merged_df)
+    X_processed = preprocess_features(selected_merged_df)
 
-    X_processed.to_csv(cache_path_X_preproc , header=False , index=False)
+    X_processed.columns = features
+    X_processed.to_csv(cache_path_X_preproc , header=True , index=False)
     y.to_csv(cache_path_y_preproc , header=True , index=False)
 
     if X_processed.shape[0] == y.shape[0]:

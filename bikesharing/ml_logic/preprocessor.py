@@ -47,20 +47,10 @@ def preprocess_features(df: pd.DataFrame):
 
     X = df[['temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
        'windspeed_10m', 'precipitation','hour_sin', 'hour_cos', 'month_sin', 'month_cos', 'day_sin', 'day_cos']]
-    y = df[['Altstadt-Lehel', 'Au - Haidhausen',
-       'Aubing-Lochhausen-Langwied', 'Berg am Laim', 'Bogenhausen',
-       'Feldmoching', 'Hadern', 'Harlaching', 'Hasenbergl-Lerchenau Ost',
-       'Laim', 'Lochhausen', 'Ludwigsvorstadt-Isarvorstadt', 'Maxvorstadt',
-       'Milbertshofen-Am Hart', 'Moosach', 'Neuhausen-Nymphenburg',
-       'Obergiesing', 'Obermenzing', 'Obersendling', 'Pasing',
-       'Pasing-Obermenzing', 'Ramersdorf-Perlach', 'Schwabing-Freimann',
-       'Schwabing-West', 'Schwanthalerhöhe', 'Sendling', 'Sendling-Westpark',
-       'Südgiesing', 'Thalkirchen', 'Trudering', 'Trudering-Riem',
-       'Untergiesing', 'Untergiesing-Harlaching', 'Untermenzing-Allach']]
 
     preprocessor = create_preprocessor()
     X_processed = preprocessor.fit_transform(X)
 
     print("✅ X_processed, with shape", X_processed.shape)
 
-    return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1) , y
+    return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1)

@@ -74,7 +74,7 @@ def encode_district_label(rental_df: pd.DataFrame, polygons: dict) -> pd.DataFra
     return df
 
 
-def encode_temporal_features(datetime_column: pd.Series) -> pd.DataFrame:
+def encode_temporal_features(datetime_column: pd.DataFrame) -> pd.DataFrame:
     """
     Encodes temporal features (hour, month, day) in the DataFrame using sine and cosine transformations.
 
@@ -86,12 +86,12 @@ def encode_temporal_features(datetime_column: pd.Series) -> pd.DataFrame:
     """
     # Create a new DataFrame to hold the encoded features
     encoded_df = pd.DataFrame()
-    encoded_df['rent_date_hour'] = datetime_column
+    encoded_df['rent_date_hour'] = datetime_column['rent_date_hour']
 
     # Extract hour, month, and day from the datetime_column
-    encoded_df['hour'] = datetime_column.dt.hour
-    encoded_df['month'] = datetime_column.dt.month
-    encoded_df['day'] = datetime_column.dt.day
+    encoded_df['hour'] = datetime_column['rent_date_hour'].dt.hour.apply(lambda x: x+1)
+    encoded_df['month'] = datetime_column['rent_date_hour'].dt.month
+    encoded_df['day'] = datetime_column['rent_date_hour'].dt.day
 
     temporal_features = ['hour', 'month', 'day']
 
@@ -100,6 +100,6 @@ def encode_temporal_features(datetime_column: pd.Series) -> pd.DataFrame:
         encoded_df[f'{feature}_sin'] = np.sin(2 * np.pi * encoded_df[feature] / encoded_df[feature].max())
         encoded_df[f'{feature}_cos'] = np.cos(2 * np.pi * encoded_df[feature] / encoded_df[feature].max())
 
-    encoded_df.drop(columns=['day', 'hour', 'month'], inplace=True)
+    encoded_df.drop(columns=temporal_features, inplace=True)
 
     return encoded_df

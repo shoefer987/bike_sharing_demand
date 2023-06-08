@@ -22,6 +22,7 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
         pd.DataFrame: The DataFrame with rental data grouped by hour.
     """
     # Preprocessing
+    df['STARTTIME'] = pd.to_datetime(df['STARTTIME'])
     df['rent_date_hour'] = df['STARTTIME'].dt.floor('H')
     df['rent_date_hour'] = pd.to_datetime(df['STARTTIME']).dt.floor('H')
 
@@ -29,10 +30,11 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
     # Grouping by Hour
     df_by_hour = df.groupby(by='rent_date_hour')[df.columns[1:-1]].sum()
 
-    return df_by_hour
+    return df_by_hour.reset_index()
 
 
 def preprocess_features(X: pd.DataFrame) -> np.ndarray:
+    X = X.fillna(0)
     def create_preprocessor() -> ColumnTransformer:
 
         # SCALE PIPE

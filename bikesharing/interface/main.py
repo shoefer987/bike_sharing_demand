@@ -89,7 +89,7 @@ def preprocess():
        'Untergiesing', 'Untergiesing-Harlaching', 'Untermenzing-Allach']
 
     X = merged_df.drop(columns=districts)
-    y = merged_df[districts]
+    y = merged_df[districts].fillna(0)
 
     features = ['temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
        'windspeed_10m', 'precipitation', 'is_holiday', 'is_weekend',

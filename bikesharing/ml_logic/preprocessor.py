@@ -33,12 +33,11 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
     """
     # Preprocessing
     df['rent_date_hour'] = df['STARTTIME'].dt.floor('H')
+    df['rent_date_hour'] = pd.to_datetime(df['STARTTIME']).dt.floor('H')
+
 
     # Grouping by Hour
-    df_by_hour = df.groupby('rent_date_hour').agg({
-        'hour': np.mean,
-        **{district: np.sum for district in df['district']}
-    }).reset_index()
+    df_by_hour = df.groupby(by='rent_date_hour')[df.columns[1:-1]].sum()
 
     return df_by_hour
 

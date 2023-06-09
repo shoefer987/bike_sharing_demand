@@ -13,3 +13,5 @@ env:Zone.Identifier
 notebooks/archanaa_data_exploration.ipynb:Zone.Identifier
 notebooks/jui-kate_clustering.ipynb
 notebooks/jui-kate_feature_eng.ipynb
+notebooks/shoefer987_preprocessing.ipynb
+bikesharing/ml_logic/__pycache__/preprocessor.cpython-310.pyc

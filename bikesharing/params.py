@@ -11,10 +11,10 @@ BQ_DATASET = os.environ.get("BQ_DATASET")
 BQ_REGION = os.environ.get("BQ_REGION")
 
 ############ MODEL ##############
-FOLD_LENGTH = os.environ.get("FOLD_LENGTH")
-FOLD_STRIDE = os.environ.get("FOLD_STRIDE")
-TRAIN_TEST_RATIO = os.environ.get("TRAIN_TEST_RATIO")
-INPUT_LENGTH = os.environ.get("INPUT_LENGTH")
+FOLD_LENGTH = int(os.environ.get("FOLD_LENGTH"))
+FOLD_STRIDE = int(os.environ.get("FOLD_STRIDE"))
+TRAIN_TEST_RATIO = float(os.environ.get("TRAIN_TEST_RATIO"))
+INPUT_LENGTH = int(os.environ.get("INPUT_LENGTH"))
 
 ########### CONSTANTS ###########
 LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "bikesharing", "data")

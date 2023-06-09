@@ -65,6 +65,9 @@ def preprocess():
     merged_df['rent_date_hour'] = merged_df['time']
     merged_df = merged_df.sort_values(by='rent_date_hour').drop(columns=['time'])
     merged_df.fillna(0 , inplace=True)
+
+    # Dropping leapyear data
+
     merged_df['filter_time'] = merged_df['rent_date_hour'].apply(lambda x: str(x)[5:10])
     merged_df = merged_df[merged_df['filter_time'] != '02-29'].drop(columns=['filter_time'])
 

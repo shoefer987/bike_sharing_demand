@@ -64,6 +64,9 @@ def preprocess():
     merged_df = aggregated_rental_df.merge(weather_data_df, right_on='time' , left_on='rent_date_hour' , how='outer')
     merged_df['rent_date_hour'] = merged_df['time']
     merged_df = merged_df.sort_values(by='rent_date_hour').drop(columns=['time'])
+    merged_df.fillna(0 , inplace=True)
+    merged_df['filter_time'] = merged_df['rent_date_hour'].apply(lambda x: str(x)[5:10])
+    merged_df = merged_df[merged_df['filter_time'] != '02-29'].drop(columns=['filter_time'])
 
     # 7. feature enginering & merge
     holidays = is_holiday(merged_df[['rent_date_hour']])
@@ -77,6 +80,9 @@ def preprocess():
 
     # 8. feature selection
 
+
+    # Dropping leapyear data
+
     districts = ['Altstadt-Lehel', 'Au - Haidhausen',
        'Aubing-Lochhausen-Langwied', 'Berg am Laim', 'Bogenhausen',
        'Feldmoching', 'Hadern', 'Harlaching', 'Hasenbergl-Lerchenau Ost',
@@ -89,11 +95,14 @@ def preprocess():
        'Untergiesing', 'Untergiesing-Harlaching', 'Untermenzing-Allach']
 
     X = merged_df.drop(columns=districts)
-    y = merged_df[districts].fillna(0)
+    y = merged_df[districts]
+
+    print(f'X_shape: {X.shape}')
+    print(f'y_shape: {y.shape}')
 
     features = ['temperature_2m', 'relativehumidity_2m', 'apparent_temperature',
-       'windspeed_10m', 'precipitation', 'is_holiday', 'is_weekend',
-       'hour_sin', 'hour_cos', 'month_sin', 'month_cos', 'day_sin', 'day_cos']
+       'windspeed_10m', 'precipitation', 'hour_sin', 'hour_cos', 'month_sin',
+       'month_cos', 'day_sin', 'day_cos','is_holiday', 'is_weekend']
 
     selected_merged_df = feature_selection(X , features)
 

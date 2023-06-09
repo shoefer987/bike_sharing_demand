@@ -34,8 +34,6 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def preprocess_features(df: pd.DataFrame):
-
-    df = df.fillna(0)
     def create_preprocessor() -> ColumnTransformer:
 
         # SCALE PIPE
@@ -50,7 +48,5 @@ def preprocess_features(df: pd.DataFrame):
 
     preprocessor = create_preprocessor()
     X_processed = preprocessor.fit_transform(X)
-
-    print("✅ X_processed, with shape", X_processed.shape)
 
     return pd.concat([pd.DataFrame(X_processed) , df[['is_holiday', 'is_weekend']]] , axis=1)

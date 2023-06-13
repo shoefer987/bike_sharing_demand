@@ -14,7 +14,6 @@ attrs==23.1.0
 Babel==2.12.1
 backcall==0.2.0
 beautifulsoup4==4.12.2
-bikesharing==0.0.1
 bleach==6.0.0
 blinker==1.6.2
 branca==0.6.0

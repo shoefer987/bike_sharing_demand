@@ -36,10 +36,12 @@ def group_rental_data_by_hour(df: pd.DataFrame) -> pd.DataFrame:
 def preprocess_features(df: pd.DataFrame):
     scaler = MinMaxScaler()
 
-    X = df[['temperature_2m', 'apparent_temperature','windspeed_10m', 'precipitation',
+    features = ['temperature_2m', 'apparent_temperature','windspeed_10m', 'precipitation',
             'hour_sin', 'hour_cos', 'month_sin', 'month_cos', 'day_sin', 'day_cos',
-            'weekday_sin' , 'weekday_cos']]
+            'weekday_sin' , 'weekday_cos']
 
-    X[scaler.get_feature_names_out] = scaler.fit_transform(X)
+    X = df[features]
 
-    return pd.concat([X , df[['is_weekend' , 'is_holiday']]])
+    df[features] = scaler.fit_transform(X)
+
+    return df

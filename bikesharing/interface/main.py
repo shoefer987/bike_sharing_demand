@@ -144,9 +144,28 @@ def train():
     pass
 
 # function to be defined
-def predict():
-    pass
+def predict(weather_data : dict):
+    weather_data_df = pd.DataFrame(weather_data)
 
+    pred_df = weather_data_df.rename({'time' : 'rent_date_hour'} , axis=1)
+    pred_df['rent_date_hour'] = pd.to_datetime(pred_df['rent_date_hour'])
+
+    holidays = is_holiday(pred_df[['rent_date_hour']])
+    pred_df = pred_df.merge(holidays , on='rent_date_hour' , how='inner')
+
+    weekends = is_weekend(pred_df[['rent_date_hour']])
+    pred_df = pred_df.merge(weekends , on='rent_date_hour' , how='inner')
+
+    encoded_date = encode_temporal_features(pred_df[['rent_date_hour']])
+    pred_df = pred_df.merge(encoded_date , on='rent_date_hour' , how='inner')
+
+    pred_proc_df = preprocess_features(pred_df).drop(columns='rent_date_hour')
+
+    model = load_model()
+
+    prediction = model.predict(pred_proc_df)
+
+    return prediction
 # function to be defined
 def evaluate():
     pass

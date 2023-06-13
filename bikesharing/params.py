@@ -18,3 +18,4 @@ INPUT_LENGTH = int(os.environ.get("INPUT_LENGTH"))
 
 ########### CONSTANTS ###########
 LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "bikesharing", "data")
+LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "bikesharing", "training_outputs")

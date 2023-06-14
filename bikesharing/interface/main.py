@@ -4,8 +4,10 @@ from bikesharing.ml_logic.data import get_raw_data, get_weather_data, get_polygo
 from bikesharing.ml_logic.encoders import encode_district_label, encode_temporal_features
 from bikesharing.ml_logic.preprocessor import group_rental_data_by_hour, preprocess_features
 from bikesharing.ml_logic.feature_engineering import is_holiday, is_weekend ,feature_selection
-from bikesharing.ml_logic.registry import load_model
+from bikesharing.ml_logic.registry import load_model, save_model
 from bikesharing.params import *
+from bikesharing.ml_logic.model import get_model_params
+from xgboost import XGBRegressor
 
 from pathlib import Path
 from colorama import Fore, Style
@@ -133,16 +135,28 @@ def train():
     Return val_mae as a float
     """
 
-    # 1. Load processed data
-        # 1.1 Load from cache if present
+    # 1. Get preprocessed data
+    X, y = preprocess()
+    print(f'X_shape: {X.shape}')
+    print(f'y_shape: {y.shape}')
 
-        # 1.2 Load from GBQ if not
+    districts = y.columns
 
-    # 2. Test/Train/Val Split
-        # Train=2 years
-        # Test=1 year
-        # Val=1 year
-    pass
+    # 2. Train=4 years
+    X_train = X.copy()
+    y_train = y.copy()
+
+    for district in districts:
+        hyper_params = get_model_params(district)
+        print(Fore.BLUE + f"\nTraining model for district {district}..." + Style.RESET_ALL)
+        model = XGBRegressor(objective='reg:squarederror', **hyper_params)
+        y_train_district = y_train[district]
+        model.fit(X_train, y_train_district)
+        save_model(model, district)
+
+    print(f"✅ Models trained for all {len(districts)} districts")
+
+    return None
 
 # function to be defined
 def predict(weather_data):

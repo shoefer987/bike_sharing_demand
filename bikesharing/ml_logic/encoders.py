@@ -92,8 +92,10 @@ def encode_temporal_features(datetime_column: pd.DataFrame) -> pd.DataFrame:
     encoded_df['hour'] = datetime_column['rent_date_hour'].dt.hour.apply(lambda x: x+1)
     encoded_df['month'] = datetime_column['rent_date_hour'].dt.month
     encoded_df['day'] = datetime_column['rent_date_hour'].dt.day
+    encoded_df['weekday'] = datetime_column['rent_date_hour'].dt.weekday + 1
 
-    temporal_features = ['hour', 'month', 'day']
+
+    temporal_features = ['hour', 'month', 'day' , 'weekday']
 
     # Apply sine and cosine transformations to the temporal features
     for feature in temporal_features:

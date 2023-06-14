@@ -127,7 +127,7 @@ def train():
     """
     - Download processed data from your BQ table (or from cache if it exists)
     - Train on the preprocessed dataset (which should be ordered by date)
-    - Store training results and model weights
+    - Store models on GCP via registry.save_model()
 
     Return val_mae as a float
     """

@@ -44,6 +44,7 @@ def train_test_indices(fold:pd.DataFrame,
     Returns:
         Tuple[pd.DataFrame]: A tuple of two dataframes (fold_train, fold_test)
     """
+
 def train_test_split(fold:pd.DataFrame,
                      train_test_ratio: float,
                      input_length: int) -> Tuple[pd.DataFrame]:
@@ -121,3 +122,82 @@ def get_X_y(
         y.append(yi)
 
     return np.array(X), np.array(y)
+
+def get_model_params(district:str) -> dict:
+    '''
+        returns the hyperparameters for training an XGBRegressor for the
+        specified district
+    '''
+    hyperparams = {
+        'Feldmoching': {
+            'n_estimators': 100,
+            'max_depth': 5
+        },
+        'Obersendling': {
+            'n_estimators': 100,
+            'max_depth': 5,
+            'colsample_bytree': 0.8,
+            'eta': 0.1,
+            'gamma': 5,
+            'min_child_weight': 3
+        },
+        'Ludwigsvorstadt-Isarvorstadt': {
+            'n_estimators': 10,
+            'max_depth': 7,
+            'eta': 0.3,
+            'min_child_weight': 5,
+            'tree_method': 'approx'
+        },
+        'Neuhausen-Nymphenburg': {
+            'n_estimators': 10,
+            'max_depth': 6,
+            'min_child_weight': 3,
+            'tree_method': 'approx'
+        },
+        'Sendling': {
+            'n_estimators': 100,
+            'max_depth': 5
+        },
+        'Maxvorstadt': {
+            'n_estimators': 10,
+            'max_depth': 10,
+            'min_child_weight': 2,
+            'tree_method': 'approx'
+        },
+        'Untergiesing-Harlaching': {
+            'n_estimators': 10,
+            'max_depth': 6,
+            'eta': 0.3,
+            'min_child_weight': 5,
+            'tree_method': 'approx'
+        },
+        'Laim': {
+            'max_depth': 7,
+            'colsample_bytree': 0.6,
+            'eta': 0.05,
+            'gamma': 0.5,
+            'min_child_weight': 3,
+            'subsample': 1
+        }
+    }
+
+    if district in ['Obersendling', 'Hadern', 'Pasing-Obermenzing', 'Aubing-Lochhausen-Langwied',
+                    'Thalkirchen', 'Pasing', 'Trudering-Riem', 'Harlaching', 'Hasenbergl-Lerchenau Ost',
+                    'Südgiesing', 'Obermenzing', 'Trudering']:
+        return hyperparams['Obersendling']
+    elif district in ['Laim', 'Obergiesing', 'Sendling-Westpark', 'Ramersdorf-Perlach', 'Berg am Laim']:
+        return hyperparams['Laim']
+    elif district in ['Untergiesing-Harlaching', 'Bogenhausen', 'Untergiesing', 'Schwanthalerhöhe', 'Berg am Laim']:
+        return hyperparams['Untergiesing-Harlaching']
+    elif district in ['Sendling', 'Schwabing-West', 'Moosach', 'Au - Haidhausen']:
+        return hyperparams['Sendling']
+    elif district in ['Feldmoching', 'Untermenzing-Allach', 'Lochhausen']:
+        return hyperparams['Feldmoching']
+    elif district in ['Neuhausen-Nymphenburg', 'Milbertshofen-Am Hart']:
+        return hyperparams['Neuhausen-Nymphenburg']
+    elif district in ['Ludwigsvorstadt-Isarvorstadt', 'Schwabing-Freimann']:
+        return hyperparams['Ludwigsvorstadt-Isarvorstadt']
+    elif district in ['Maxvorstadt', 'Altstadt-Lehel']:
+        return hyperparams['Maxvorstadt']
+    else:
+        return None

@@ -4,6 +4,7 @@ from bikesharing.ml_logic.data import get_raw_data, get_weather_data, get_polygo
 from bikesharing.ml_logic.encoders import encode_district_label, encode_temporal_features
 from bikesharing.ml_logic.preprocessor import group_rental_data_by_hour, preprocess_features
 from bikesharing.ml_logic.feature_engineering import is_holiday, is_weekend ,feature_selection
+from bikesharing.ml_logic.registry import load_model
 from bikesharing.params import *
 
 from pathlib import Path
@@ -144,7 +145,7 @@ def train():
     pass
 
 # function to be defined
-def predict(weather_data : dict):
+def predict(weather_data):
     weather_data_df = pd.DataFrame(weather_data)
 
     pred_df = weather_data_df.rename({'time' : 'rent_date_hour'} , axis=1)
@@ -161,7 +162,7 @@ def predict(weather_data : dict):
 
     pred_proc_df = preprocess_features(pred_df).drop(columns='rent_date_hour')
 
-    model = load_model()
+    model = load_model('Maxvorstadt')
 
     prediction = model.predict(pred_proc_df)
 

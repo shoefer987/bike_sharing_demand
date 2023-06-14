@@ -152,7 +152,6 @@ def train():
         model = XGBRegressor(objective='reg:squarederror', **hyper_params)
         model.fit(X_train, y_train)
         save_model(model, district)
-        print(Fore.BLUE + f"\nModel saved for {district}..." + Style.RESET_ALL)
 
     print(f"✅ Models trained for all {len(districts)} districts")
 

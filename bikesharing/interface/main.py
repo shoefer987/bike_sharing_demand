@@ -178,9 +178,10 @@ def predict(weather_data):
 
     model = load_model('Maxvorstadt')
 
-    prediction = model.predict(pred_proc_df)
+    prediction = [round(x) for x in model.predict(pred_proc_df)]
 
-    return prediction
+    return {'Maxvorstadt' : list(prediction)}
+
 # function to be defined
 def evaluate():
     pass

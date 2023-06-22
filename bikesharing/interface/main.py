@@ -176,11 +176,25 @@ def predict(weather_data):
 
     pred_proc_df = preprocess_features(pred_df).drop(columns='rent_date_hour')
 
-    model = load_model('Maxvorstadt')
+    districts = ['Maxvorstadt', 'Schwabing-West', 'Au - Haidhausen', 'Sendling',
+       'Schwanthalerhöhe', 'Moosach', 'Berg am Laim', 'Trudering',
+       'Ramersdorf', 'Obergiesing', 'Thalkirchen', 'Obersendling',
+       'Hadern', 'Pasing', 'Laim', 'Ludwigsvorstadt-Isarvorstadt', 'Ramersdorf-Perlach', 'Südgiesing',
+       'Altstadt-Lehel', 'Sendling-Westpark', 'Neuhausen-Nymphenburg',
+       'Schwabing-Freimann', 'Moosach', 'Milbertshofen-Am Hart',
+       'Bogenhausen', 'Trudering-Riem', 'Untergiesing-Harlaching']
 
-    prediction = [round(x) for x in model.predict(pred_proc_df)]
+    predictions = {}
 
-    return {'Maxvorstadt' : list(prediction)}
+    for dist in districts:
+        print(dist)
+        model = load_model(dist)
+
+        prediction = [round(x) for x in model.predict(pred_proc_df)]
+
+        predictions[dist] = prediction
+
+    return predictions
 
 # function to be defined
 def evaluate():

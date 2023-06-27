@@ -1,8 +1,4 @@
 raw_data/
-notebooks/shoefer987_project_pitch.ipynb
-notebooks/shoefer987_preprocessing.ipynb
-notebooks/jui-kate_clustering.ipynb
-notebooks/jonathan122802*
 .env
 __pycache__/
 *checkpoint.ipynb
@@ -10,10 +6,4 @@ __pycache__/
 *.egg-info
 env
 env:Zone.Identifier
-notebooks/archanaa_data_exploration.ipynb:Zone.Identifier
-notebooks/jui-kate_clustering.ipynb
-notebooks/jui-kate_feature_eng.ipynb
-notebooks/shoefer987_preprocessing.ipynb
-bikesharing/ml_logic/__pycache__/preprocessor.cpython-310.pyc
-notebooks/archanaa_rnn_data_preparation.ipynb:Zone.Identifier
-notebooks/archanaa_new_method.ipynb:Zone.Identifier
+notebooks/
